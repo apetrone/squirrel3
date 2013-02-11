@@ -7,4 +7,4 @@ SET(squirrel_SRC
 INCLUDE_DIRECTORIES(../include)
 
 ADD_EXECUTABLE(sq ${squirrel_SRC})
-TARGET_LINK_LIBRARIES(sq sqstdlib squirrele)
+TARGET_LINK_LIBRARIES(sq sqstdlib squirrel)
