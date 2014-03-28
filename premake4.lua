@@ -84,7 +84,7 @@ project "sq"
 	
 	files
 	{
-		"sq/**.c"
+		"sq/**.cpp"
 	}
 	
 
