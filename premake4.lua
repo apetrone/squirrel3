@@ -72,12 +72,13 @@ project "squirrel"
 			flags { "Symbols", "Optimize" }	
 	end	
 	
---[[
+
 project "sq"
 	language("C++")
 	objdir "obj"
 	uuid( "CCD83534-0BFB-DC4A-AF82-4CCDA85D998E" )	
 	kind "ConsoleApp"
+	
 	
 	platforms { "x32", "x64", "native" }
 	
@@ -123,4 +124,3 @@ project "sq"
 				"squirrel"
 			}			
 	end
---]]
