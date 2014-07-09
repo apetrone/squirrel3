@@ -223,36 +223,33 @@ const SQChar* SQFunctionProto::GetLocal(SQVM *vm,SQUnsignedInteger stackbase,SQU
 
 SQInteger SQFunctionProto::GetLine(SQInstruction *curr)
 {
-    SQInteger op = (SQInteger)(curr-_instructions);
-    SQInteger line=_lineinfos[0]._line;
-    SQInteger low = 0;
-    SQInteger high = _nlineinfos - 1;
-    SQInteger mid = 0;
-    while(low <= high)
-    {
-        mid = low + ((high - low) >> 1);
-        SQInteger curop = _lineinfos[mid]._op;
-        if(curop > op)
-        {
-            high = mid - 1;
-        }
-        else if(curop < op) {
-            if(mid < (_nlineinfos - 1) 
-                && _lineinfos[mid + 1]._op >= op) {
-                break;
-            }
-            low = mid + 1;
-        }
-        else { //equal
-            break;
-        }
-    }
-    
-    while(_lineinfos[mid]._op >= op && mid >= 0) mid--;
-    
-    line = _lineinfos[mid]._line;
+	SQInteger op = (SQInteger)(curr-_instructions);
+	SQInteger line=_lineinfos[0]._line;
+	SQInteger low = 0;
+	SQInteger high = _nlineinfos - 1;
+	SQInteger mid = 0;
+	while(low <= high)
+	{
+		mid = low + ((high - low) >> 1);
+		SQInteger curop = _lineinfos[mid]._op;
+		if(curop > op)
+		{
+			high = mid - 1;
+		}
+		else if(curop < op) {
+			if(mid < (_nlineinfos - 1) 
+				&& _lineinfos[mid + 1]._op >= op) {
+				break;
+			}
+			low = mid + 1;
+		}
+		else { //equal
+			break;
+		}
+	}
 
-    return line;
+	line = _lineinfos[mid]._line;
+	return line;
 }
 
 SQClosure::~SQClosure()
@@ -306,6 +303,7 @@ bool WriteObject(HSQUIRRELVM v,SQUserPointer up,SQWRITEFUNC write,SQObjectPtr &o
 		_CHECK_IO(SafeWrite(v,write,up,&_string(o)->_len,sizeof(SQInteger)));
 		_CHECK_IO(SafeWrite(v,write,up,_stringval(o),rsl(_string(o)->_len)));
 		break;
+	case OT_BOOL:
 	case OT_INTEGER:
 		_CHECK_IO(SafeWrite(v,write,up,&_integer(o),sizeof(SQInteger)));break;
 	case OT_FLOAT:
@@ -335,6 +333,10 @@ bool ReadObject(HSQUIRRELVM v,SQUserPointer up,SQREADFUNC read,SQObjectPtr &o)
 	case OT_INTEGER:{
 		SQInteger i;
 		_CHECK_IO(SafeRead(v,read,up,&i,sizeof(SQInteger))); o = i; break;
+					}
+	case OT_BOOL:{
+		SQInteger i;
+		_CHECK_IO(SafeRead(v,read,up,&i,sizeof(SQInteger))); o._type = OT_BOOL; o._unVal.nInteger = i; break;
 					}
 	case OT_FLOAT:{
 		SQFloat f;
